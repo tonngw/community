@@ -1,0 +1,34 @@
+package com.nowcoder.community.dao;
+
+import com.nowcoder.community.entity.DiscussPost;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * @author tonngw
+ * @date 2022-01-14 12:17
+ */
+@Mapper
+public interface DiscussPostMapper {
+
+    /**
+     * 查询所有帖子，包含分页查询
+     * @param userId 用户 id，id = 0 表示查询所有用户的数据
+     * @param offset 开始查询位置
+     * @param limit 查询条数
+     * @return 帖子集合
+     */
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+
+    /**
+     * 查询帖子条数（不包括拉黑的）
+     * @Param 注解是用于给参数取别名的，如果参数列表中只有一个参数且要在 Mapper 配置文件
+     * <if></if> 中使用，则必须使用别名
+     * 
+     * @param userId 用户 id，id = 0 表示查询所有用户的数据
+     * @return 记录数
+     */
+    int selectDiscussPostRows(@Param("userId") int userId);
+}
