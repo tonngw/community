@@ -142,7 +142,7 @@ public class SensitiveFilter {
                     // 重新指向根节点
                     tempNode = rootNode;
                 } else {
-                    // 检查下一个车字符
+                    // 检查下一个字符
                     position++;
                 }
 
@@ -152,7 +152,7 @@ public class SensitiveFilter {
             // position 遍历越界仍未匹配到敏感词
             else {
                 sb.append(text.charAt(begin));
-                position = ++ begin;
+                position = ++begin;
                 tempNode = rootNode;
             }
         }

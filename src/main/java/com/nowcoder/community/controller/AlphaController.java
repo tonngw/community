@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * 测试 Spring Boot
+ *
  * @author tonngw
  * @date 2022-01-14 11:38
  */
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/alpha")
 public class AlphaController {
-    
+
     @RequestMapping("/hello")
     @ResponseBody
     public String sayHello() {
@@ -67,5 +68,16 @@ public class AlphaController {
         System.out.println(session.getAttribute("id"));
         System.out.println(session.getAttribute("name"));
         return "get session";
+    }
+
+    /**
+     * ajax示例
+     */
+    @RequestMapping(path = "/ajax", method = RequestMethod.POST)
+    @ResponseBody
+    public String testAjax(String name, int age) {
+        System.out.println(name);
+        System.out.println(age);
+        return CommunityUtil.getJSONString(0, "操作成功!");
     }
 }
