@@ -2,5 +2,5 @@
 一个仿照牛客网实现的讨论社区，不仅实现了基本的注册，登录，发帖，评论，点赞，回复功能，同时使用前缀树实现敏感词过滤，使用wkhtmltopdf生成长图和pdf，实现网站UV和DAU统计，并将用户头像等信息存于七牛云服务器。
 
 ## TODO
-- 首页分页条点击跳转
-- th:placeholder="|回复${rvo.user.username}|"
+- 首页分页条点击跳转，其他页面会复用首页分页条
+- 🚩帖子详情页面，th:placeholder="|回复${rvo.user.username}|"
