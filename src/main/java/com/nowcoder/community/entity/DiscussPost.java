@@ -16,18 +16,20 @@ import java.util.Date;
 @Document(indexName = "discusspost", type = "_doc", shards = 6, replicas = 3)
 public class DiscussPost {
     
-    @Id
+    /*@Id
     private int id;
     
     @Field(type = FieldType.Integer)
     private int userId;
 
-    /**
+    *//**
      * analyzer: 存储使用的分词器 ik_max_word，尽可能的存储更多的词
      * searchAnalyzer: 搜索使用的分词器 ik_smart，智能分词器
-     */
+     *//*
     @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String title;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String content;
 
     @Field(type = FieldType.Integer)
@@ -35,10 +37,42 @@ public class DiscussPost {
 
     @Field(type = FieldType.Integer)
     private int status;
+
+    @Field(type = FieldType.Date)
     private Date createTime;
 
     @Field(type = FieldType.Integer)
     private int commentCount;
+
+    @Field(type = FieldType.Double)
+    private double score;*/
+
+    @Id
+    private int id;
+
+    @Field(type = FieldType.Integer)
+    private int userId;
+
+    // 互联网校招
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String title;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
+    private String content;
+
+    @Field(type = FieldType.Integer)
+    private int type;
+
+    @Field(type = FieldType.Integer)
+    private int status;
+
+    @Field(type = FieldType.Date)
+    private Date createTime;
+
+    @Field(type = FieldType.Integer)
+    private int commentCount;
+
+    @Field(type = FieldType.Double)
     private double score;
 
     public int getId() {
