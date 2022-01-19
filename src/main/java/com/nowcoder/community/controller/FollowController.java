@@ -1,7 +1,9 @@
 package com.nowcoder.community.controller;
 
+import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.FollowService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityConstant;
@@ -35,12 +37,24 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
     public String follow(int entityType, int entityId) {
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(), entityType, entityId);
+
+        // 触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
 
         return CommunityUtil.getJSONString(0, "已关注!");
     }
@@ -57,7 +71,7 @@ public class FollowController implements CommunityConstant {
 
     /**
      * 获取 userId 对应用户关注的人
-     * 
+     *
      * @param userId 用户 id
      * @param page 分页信息
      * @param model 传递给页面的数据
@@ -70,7 +84,7 @@ public class FollowController implements CommunityConstant {
             throw new RuntimeException("该用户不存在! ");
         }
         model.addAttribute("user", user);
-        
+
         page.setLimit(5);
         page.setPath("/followees/" + userId);
         page.setRows((int) followService.findFolloweeCount(userId, ENTITY_TYPE_USER));
@@ -83,8 +97,8 @@ public class FollowController implements CommunityConstant {
             }
         }
         model.addAttribute("users", userList);
-        
-        return "/site/followee"; 
+
+        return "/site/followee";
     }
 
     /**

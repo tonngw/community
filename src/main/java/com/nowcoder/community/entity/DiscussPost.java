@@ -1,5 +1,10 @@
 package com.nowcoder.community.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
 import java.util.Date;
 
 /**
@@ -8,15 +13,31 @@ import java.util.Date;
  * @author tonngw
  * @date 2022-01-14 11:58
  */
+@Document(indexName = "discusspost", type = "_doc", shards = 6, replicas = 3)
 public class DiscussPost {
     
+    @Id
     private int id;
+    
+    @Field(type = FieldType.Integer)
     private int userId;
+
+    /**
+     * analyzer: 存储使用的分词器 ik_max_word，尽可能的存储更多的词
+     * searchAnalyzer: 搜索使用的分词器 ik_smart，智能分词器
+     */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String title;
     private String content;
+
+    @Field(type = FieldType.Integer)
     private int type;
+
+    @Field(type = FieldType.Integer)
     private int status;
     private Date createTime;
+
+    @Field(type = FieldType.Integer)
     private int commentCount;
     private double score;
 
