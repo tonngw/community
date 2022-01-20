@@ -18,9 +18,10 @@ public interface DiscussPostMapper {
      * @param userId 用户 id，id = 0 表示查询所有用户的数据
      * @param offset 开始查询位置
      * @param limit 查询条数
+     * @param orderMode 排序模式 0 按最新排序，1 表示按最热排序（分数排序）
      * @return 帖子集合
      */
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
 
     /**
      * 查询帖子条数（不包括拉黑的）
@@ -69,4 +70,12 @@ public interface DiscussPostMapper {
      * @return 影响行数
      */
     int updateStatus(int id, int status);
+
+    /**
+     * 根据帖子 id 修改帖子分数
+     * @param id 帖子 id 
+     * @param score 帖子分数
+     * @return 影响行数
+     */
+    int updateScore(int id, double score);
 }
