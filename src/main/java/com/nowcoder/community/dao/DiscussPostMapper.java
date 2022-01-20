@@ -53,4 +53,20 @@ public interface DiscussPostMapper {
      * @return 影响行数
      */
     int updateCommentCount(int id, int commentCount);
+
+    /**
+     * 根据帖子 id 修改帖子类型（普通 置顶）
+     * @param id 帖子 id
+     * @param type 帖子类型
+     * @return 影响行数
+     */
+    int updateType(int id, int type);
+
+    /**
+     * 根据帖子 id 修改帖子状态（正常 加精[精华] 删除[拉黑]）
+     * @param id 帖子 id 
+     * @param status 帖子状态
+     * @return 影响行数
+     */
+    int updateStatus(int id, int status);
 }
