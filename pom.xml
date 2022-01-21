@@ -130,6 +130,12 @@
             <version>2.7.0</version>
         </dependency>
 
+        <!-- 项目监控 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
