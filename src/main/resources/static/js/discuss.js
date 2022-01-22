@@ -21,36 +21,78 @@ function like(btn, entityType, entityId, entityUserId, postId) {
     );
 }
 
-// 置顶
+// 置顶 取消置顶
 function setTop() {
-    $.post(
-        CONTEXT_PATH + "/discuss/top",
-        {"id":$("#postId").val()},
-        function(data) {
-            data = $.parseJSON(data);
-            if (data.code == 0) {
-                $("#topBtn").attr("disabled", "disabled");
-            } else {
-                alert(data.msg);
+    var postType = $('#postType').val();
+    // 置顶
+    if (postType != null && postType == 0) {
+        $.post(
+            CONTEXT_PATH + "/discuss/top",
+            {"id": $("#postId").val()},
+            function (data) {
+                data = $.parseJSON(data);
+                if (data.code == 0) {
+                    //$("#topBtn").attr("disabled", "disabled");
+                    window.location.reload();
+                } else {
+                    alert(data.msg);
+                }
             }
-        }
-    );
+        );
+    }
+    // 取消置顶
+    if (postType != null && postType == 1) {
+        $.post(
+            CONTEXT_PATH + "/discuss/untop",
+            {"id": $("#postId").val()},
+            function (data) {
+                data = $.parseJSON(data);
+                if (data.code == 0) {
+                    window.location.reload();
+                } else {
+                    alert(data.msg);
+                }
+            }
+        );
+    }
 }
 
-// 加精
+// 加精 取消加精
 function setWonderful() {
-    $.post(
-        CONTEXT_PATH + "/discuss/wonderful",
-        {"id":$("#postId").val()},
-        function(data) {
-            data = $.parseJSON(data);
-            if (data.code == 0) {
-                $("#wonderfulBtn").attr("disabled", "disabled");
-            } else {
-                alert(data.msg);
+    var postStatus = $('#postStatus').val();
+    
+    // 加精
+    if (postStatus != null && postStatus == 0) {
+        $.post(
+            CONTEXT_PATH + "/discuss/wonderful",
+            {"id":$("#postId").val()},
+            function(data) {
+                data = $.parseJSON(data);
+                if (data.code == 0) {
+                    // $("#wonderfulBtn").attr("disabled", "disabled");
+                    window.location.reload();
+                } else {
+                    alert(data.msg);
+                }
             }
-        }
-    );
+        );
+    }
+    // 取消加精
+    if (postStatus != null && postStatus == 1) {
+        $.post(
+            CONTEXT_PATH + "/discuss/unwonderful",
+            {"id":$("#postId").val()},
+            function(data) {
+                data = $.parseJSON(data);
+                if (data.code == 0) {
+                    // $("#wonderfulBtn").attr("disabled", "disabled");
+                    window.location.reload();
+                } else {
+                    alert(data.msg);
+                }
+            }
+        );
+    }
 }
 
 // 删除

@@ -60,7 +60,7 @@ public class MessageController implements CommunityConstant {
                 map.put("conversation", message);
                 map.put("letterCount", messageService.findLetterCount(message.getConversationId()));
                 map.put("unreadCount", messageService.findLetterUnreadCount(user.getId(), message.getConversationId()));
-                // 获取目标 id，如果当桥用户是发送者目标就是 message.getToId()，否则是 message.getFromId()
+                // 获取目标 id，如果当前用户是发送者目标就是 message.getToId()，否则是 message.getFromId()
                 int targetId = user.getId() == message.getFromId() ? message.getToId() : message.getFromId();
                 map.put("target", userService.findUserById(targetId));
 

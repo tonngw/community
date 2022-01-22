@@ -65,13 +65,15 @@
 			<div class="position-relative">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a class="nav-link active" href="profile.html">个人信息</a>
+						<a class="nav-link active" th:href="@{${tabStatus!=1}?|/user/profile/${user.id}|:'javascript:void(0)'}">个人信息</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="my-post.html">我的帖子</a>
+						<a class="nav-link" th:href="@{${tabStatus!=2}?|/user/mypost/${user.id}|:'javascript:void(0)'}"
+						   th:text="${loginUser!=null&&loginUser.id==user.id?'我发布的帖子':'TA 发布的帖子'}">我的帖子</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="my-reply.html">我的回复</a>
+						<a class="nav-link" th:href="@{${tabStatus!=3}?|/user/myreply/${user.id}|:'javascript:void(0)'}"
+						   th:text="${loginUser!=null&&loginUser.id==user.id?'我发布的帖子':'TA 发布的帖子'}">我的回复</a>
 					</li>
 				</ul>
 			</div>

@@ -188,6 +188,28 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     /**
+     * 取消置顶帖子
+     *
+     * @param id 帖子 id
+     * @return JSON
+     */
+    @RequestMapping(path = "/untop", method = RequestMethod.POST)
+    @ResponseBody
+    public String setUntop(int id) {
+        discussPostService.updateType(id, 0);
+
+        // 触发发帖事件（更新 ES 服务器中的帖子数据）
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+        eventProducer.fireEvent(event);
+
+        return CommunityUtil.getJSONString(0, "取消置顶成功！");
+    }
+
+    /**
      * 加精帖子
      *
      * @param id 帖子 id
@@ -211,6 +233,32 @@ public class DiscussPostController implements CommunityConstant {
         redisTemplate.opsForSet().add(redisKey, id);
 
         return CommunityUtil.getJSONString(0, "加精成功！");
+    }
+
+    /**
+     * 取消加精帖子
+     *
+     * @param id 帖子 id
+     * @return JSON
+     */
+    @RequestMapping(path = "/unwonderful", method = RequestMethod.POST)
+    @ResponseBody
+    public String setUnwonderful(int id) {
+        discussPostService.updateStatus(id, 0);
+
+        // 触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+        eventProducer.fireEvent(event);
+
+        // 取消加精帖子之后重新计算帖子分数
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, id);
+
+        return CommunityUtil.getJSONString(0, "取消加精成功！");
     }
 
     /**
