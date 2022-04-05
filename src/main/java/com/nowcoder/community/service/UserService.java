@@ -118,12 +118,15 @@ public class UserService implements CommunityConstant {
 
     public int activation(int userId, String code) {
         User user = userMapper.selectById(userId);
+        // 重复激活
         if (user.getStatus() == 1) {
             return ACTIVATION_REPEAT;
         } else if (user.getActivationCode().equals(code)) {
+            // 激活成功
             userMapper.updateStatus(userId, 1);
             return ACTIVATION_SUCCESS;
         } else {
+            // 激活失败
             return ACTIVATION_FAILURE;
         }
     }
@@ -161,6 +164,7 @@ public class UserService implements CommunityConstant {
             return map;
         }
 
+        // 否则全部验证成功
         // 生成登录凭证
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(user.getId());

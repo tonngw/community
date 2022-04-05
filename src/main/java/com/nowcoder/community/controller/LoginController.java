@@ -95,7 +95,7 @@ public class LoginController implements CommunityConstant {
     }
 
     /**
-     * 获取验证码
+     * 获取验证码，登录注册页面异步发送请求获取验证码
      * 重构
      * @param response
      */
@@ -115,8 +115,9 @@ public class LoginController implements CommunityConstant {
         cookie.setMaxAge(60);
         cookie.setPath(contextPath);
         response.addCookie(cookie);
-        // 将验证码存入 Redis
+        // 生成一个验证码 key
         String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
+        // 将验证码存入 Redis，60s 过期时间
         redisTemplate.opsForValue().set(redisKey, text, 60, TimeUnit.SECONDS);
 
         // 将图片输出到浏览器
@@ -142,12 +143,13 @@ public class LoginController implements CommunityConstant {
         // 检查验证码
         // String kaptcha = (String) session.getAttribute("kaptcha");
         String kaptcha = null;
-        // 防止临时登录凭证 kaptchaOwner 过期
+        // 防止验证码临时登录凭证 kaptchaOwner 键过期
         if (StringUtils.isNoneBlank(kaptchaOwner)) {
             // 从 redis 中取 kaptchaOwner 用户对应的验证码
             String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
             kaptcha = (String) redisTemplate.opsForValue().get(redisKey);
         } else {
+            // 验证码失效重新生成验证码
             model.addAttribute("codeMsg", "验证码失效");
             return "/site/login";
         }
@@ -159,7 +161,7 @@ public class LoginController implements CommunityConstant {
 
         // 检查账号、密码
         long expiredSeconds = rememberme ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
-        System.out.println(expiredSeconds);
+        // System.out.println(expiredSeconds);
         Map<String, Object> map = userService.login(username, password, expiredSeconds);
         if (map.containsKey("ticket")) {
             Cookie cookie = new Cookie("ticket", map.get("ticket").toString());

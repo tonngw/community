@@ -114,7 +114,7 @@ public class EventConsumer implements CommunityConstant {
      * 消费发帖事件
      *
      * @param record
-     */
+     */ 
     @KafkaListener(topics = {TOPIC_PUBLISH})
     public void handlePublishMessage(ConsumerRecord record) {
         if (record == null || record.value() == null) {
